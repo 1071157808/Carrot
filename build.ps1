@@ -1,6 +1,6 @@
 [CmdletBinding()]
 Param([string]$script = "build.cake",
-      [string]$target = "Default",
+      [string]$target = "Test",
       [ValidateSet("Release", "Debug")][string]$configuration = "Release",
       [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")][string]$verbosity = "Verbose",
       [Parameter(Position=0, Mandatory=$false, ValueFromRemainingArguments=$true)][string[]]$arguments)

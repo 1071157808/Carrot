@@ -4,9 +4,11 @@ var configuration = Argument("configuration", "Release");
 
 var folders = new System.Collections.Generic.Dictionary<String, Cake.Common.IO.Paths.ConvertableDirectoryPath>();
 folders.Add("Carrot.csproj", Directory("./src/Carrot"));
+folders.Add("Carrot.Amqp.csproj", Directory("./src/Carrot.Amqp"));
 folders.Add("Carrot.NLog.csproj", Directory("./src/Carrot.NLog"));
 folders.Add("Carrot.log4net.csproj", Directory("./src/Carrot.log4net"));
 folders.Add("Carrot.Tests.csproj", Directory("./src/Carrot.Tests"));
+folders.Add("Carrot.Amqp.Tests.csproj", Directory("./src/Carrot.Amqp.Tests"));
 
 Task("Clean").Does(() => {
     foreach (var folder in folders) {
@@ -21,7 +23,7 @@ Task("Restore").IsDependentOn("Clean").Does(() => {
 });
 
 Task("Version").Does(() => {
-    foreach (var folder in folders.Where(_ => _.Key != "Carrot.Tests.csproj")) {
+    foreach (var folder in folders.Where(_ => _.Key != "Carrot.Tests.csproj" && _.Key != "Carrot.Amqp.Tests.csproj")) {
         var path = String.Concat(folder.Value, "\\", folder.Key);
         var content = System.IO.File.ReadAllText(path);
         var document = new System.Xml.XmlDocument();
@@ -44,10 +46,11 @@ Task("Build").IsDependentOn("Restore").Does(() => {
 
 Task("Test").IsDependentOn("Build").Does(() => {
     DotNetCoreTest(folders["Carrot.Tests.csproj"]);
+    DotNetCoreTest(folders["Carrot.Amqp.Tests.csproj"]);
 });
 
 Task("Pack").IsDependentOn("Test").Does(() => {
-    foreach (var folder in folders.Where(_ => _.Key != "Carrot.Tests.csproj")) {
+    foreach (var folder in folders.Where(_ => _.Key != "Carrot.Tests.csproj" && _.Key != "Carrot.Amqp.Tests.csproj")) {
         DotNetCorePack(folder.Value);
     }
 });
@@ -57,7 +60,7 @@ Task("Default").IsDependentOn("Test");
 Task("Release").IsDependentOn("Version").IsDependentOn("Pack");
 
 Task("Publish").IsDependentOn("Release").Does(() => {
-    foreach (var folder in folders.Where(_ => _.Key != "Carrot.Tests.csproj")) {
+    foreach (var folder in folders.Where(_ => _.Key != "Carrot.Tests.csproj" && _.Key != "Carrot.Amqp.Tests.csproj")) {
         DotNetCorePublish(folder.Value);
     }
 });
