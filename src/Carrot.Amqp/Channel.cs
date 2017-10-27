@@ -209,17 +209,41 @@ namespace Carrot.Amqp
                         .Log(_ => $"RECEIVED: {_.ToString()}");
         }
 
-        public Task BasicQosAsync(Int16 prefetchCount, Boolean global)
+        public Task BasicQosAsync(Int16 queueName, Boolean consumerTag)
         {
             var frame = new BasicQosFrame(channelIndex,
                                           new BasicQos(0, // HACK: it seems RabbitMQ does not implement this: ({amqp_error,not_implemented,"prefetch_size!=0 (32768000)",'basic.qos'})
-                                                       prefetchCount,
-                                                       global));
+                                                       queueName,
+                                                       consumerTag));
             return frame.SendAsync(channel)
                         .LogError()
                         .Log(_ => $"SENT: {_.ToString()}")
                         .Then(_ => bag.For(BasicQosOk.StaticDescriptor)
                                       .WaitForAsync<BasicQosOkFrame>(_.Header.ChannelIndex))
+                        .LogError()
+                        .Log(_ => $"RECEIVED: {_.ToString()}");
+        }
+
+        public Task BasicConsumeAsync(String queueName,
+                                      String consumerTag,
+                                      Boolean noLocal,
+                                      Boolean noAck,
+                                      Boolean exclusive)
+        {
+            var frame = new BasicConsumeFrame(channelIndex,
+                                              new BasicConsume(0,
+                                                               queueName,
+                                                               consumerTag,
+                                                               noLocal,
+                                                               noAck,
+                                                               exclusive,
+                                                               false,
+                                                               new Table(new Dictionary<String, Object>())));
+            return frame.SendAsync(channel)
+                        .LogError()
+                        .Log(_ => $"SENT: {_.ToString()}")
+                        .Then(_ => bag.For(BasicConsumeOk.StaticDescriptor)
+                                      .WaitForAsync<BasicConsumeOkFrame>(_.Header.ChannelIndex))
                         .LogError()
                         .Log(_ => $"RECEIVED: {_.ToString()}");
         }

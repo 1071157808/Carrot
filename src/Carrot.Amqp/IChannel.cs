@@ -41,6 +41,12 @@ namespace Carrot.Amqp
                               Boolean ifUnused,
                               Boolean ifEmpty);
 
-        Task BasicQosAsync(Int16 prefetchCount, Boolean global);
+        Task BasicQosAsync(Int16 queueName, Boolean consumerTag);
+
+        Task BasicConsumeAsync(String queueName,
+                               String consumerTag,
+                               Boolean noLocal,
+                               Boolean noAck,
+                               Boolean exclusive);
     }
 }
