@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Carrot.Amqp.Entities;
 using Carrot.Amqp.Payloads;
 using DotNetty.Buffers;
 using DotNetty.Common.Utilities;
-using DotNetty.Transport.Channels;
 
 namespace Carrot.Amqp.Frames
 {
@@ -19,11 +17,12 @@ namespace Carrot.Amqp.Frames
         public override Task WriteToAsync(DotNetty.Transport.Channels.IChannel channel)
         {
             var buffer = channel.Allocator.Buffer();
-            buffer.WriteByte((Byte)Type);
+            buffer.WriteByte((Byte)Header.Type);
             buffer.WriteShort(Header.ChannelIndex);
 
             // TODO: not sure about being the best strategy; looks expansive...
             var b = Unpooled.Buffer();
+            Payload.Descriptor.Write(b);
             Payload.Write(b);
             var array = b.ToArray();
             b.SafeRelease();
@@ -34,7 +33,5 @@ namespace Carrot.Amqp.Frames
 
             return channel.WriteAndFlushAsync(buffer);
         }
-
-        public override FrameType Type => FrameType.METHOD;
     }
 }

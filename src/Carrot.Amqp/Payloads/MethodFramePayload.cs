@@ -1,5 +1,4 @@
 ﻿using System;
-using Carrot.Amqp.Decoding;
 using Carrot.Amqp.Frames;
 using DotNetty.Buffers;
 
@@ -11,8 +10,6 @@ namespace Carrot.Amqp.Payloads
 
         public void Write(IByteBuffer buffer)
         {
-            Int16FieldValueCodec.Instance.Encode(Descriptor.ClassId, buffer);
-            Int16FieldValueCodec.Instance.Encode(Descriptor.MethodId, buffer);
             WriteInternal(buffer);
         }
 

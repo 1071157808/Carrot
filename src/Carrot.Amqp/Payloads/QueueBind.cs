@@ -45,7 +45,7 @@ namespace Carrot.Amqp.Payloads
             var exchangeName = ShortStringFieldValueCodec.Instance.Decode(buffer);
             var routingKey = ShortStringFieldValueCodec.Instance.Decode(buffer);
             var b = (Int32)buffer.ReadByte();
-            var noWait = (b & 1) == b;
+            var noWait = (b & 1) == 1;
 
             var arguments = TableFieldValueCodec.Instance.Decode(buffer);
 

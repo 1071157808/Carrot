@@ -57,9 +57,4 @@ namespace Carrot.Amqp
                        : throw new NotSupportedException($"class-id '{descriptor.ClassId}' and method-id '{descriptor.MethodId}' are not supported");
         }
     }
-
-    internal interface IMethodFrameBag
-    {
-        MethodFrameBag.IMethodFrameDictionary For(MethodFrameDescriptor descriptor);
-    }
 }

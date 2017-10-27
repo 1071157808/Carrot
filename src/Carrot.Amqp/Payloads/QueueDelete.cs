@@ -34,9 +34,9 @@ namespace Carrot.Amqp.Payloads
             var name = ShortStringFieldValueCodec.Instance.Decode(buffer);
 
             var b = (Int32)buffer.ReadByte();
-            var ifUnused = (b & 1) == b;
-            var ifEmpty = (b & 2) == b;
-            var noWait = (b & 4) == b;
+            var ifUnused = (b & 1) == 1;
+            var ifEmpty = (b & 2) == 2;
+            var noWait = (b & 4) == 4;
 
             return new QueueDelete(reserved1,
                                    name,

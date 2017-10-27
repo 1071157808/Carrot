@@ -18,7 +18,7 @@ namespace Carrot.Amqp.Payloads
             var virtualHost = ShortStringFieldValueCodec.Instance.Decode(buffer);
             var reserved1 = ShortStringFieldValueCodec.Instance.Decode(buffer);
             var b = (Int32)buffer.ReadByte();
-            var reserved2 = (b & 1) == b;
+            var reserved2 = (b & 1) == 1;
 
             return new ConnectionOpen(virtualHost,
                                       reserved1,

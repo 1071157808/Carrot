@@ -8,7 +8,11 @@ namespace Carrot.Amqp.Frames
     {
         internal static ConnectionCloseFrame Close()
         {
-            return new ConnectionCloseFrame(0, new ConnectionClose(200, "connection_closed", 10, 51));
+            return new ConnectionCloseFrame(0,
+                                            new ConnectionClose(200,
+                                                                "connection_closed",
+                                                                10,
+                                                                51));
         }
 
         internal ConnectionCloseFrame(Int16 channel, ConnectionClose payload)

@@ -16,6 +16,7 @@ namespace Carrot.Amqp.Decoding
             var destination = new Byte[length];
             buffer.ReadBytes(destination);
 
+            // TODO: we need just one instance per-thread
             return new UTF8Encoding(true).GetString(destination);
         }
 

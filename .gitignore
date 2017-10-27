@@ -12,6 +12,7 @@
 [Dd]ebug*/
 [Rr]elease*/
 src/packages/
+[Tt]ools*/
 
 *.[Oo]bj
 *.suo

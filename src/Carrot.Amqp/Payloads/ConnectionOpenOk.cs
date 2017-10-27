@@ -11,7 +11,7 @@ namespace Carrot.Amqp.Payloads
 
         internal readonly String Reserved1;
 
-        internal ConnectionOpenOk(String reserved1)
+        internal ConnectionOpenOk(String reserved1 = "")
         {
             Reserved1 = reserved1;
         }

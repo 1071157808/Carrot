@@ -10,7 +10,7 @@ namespace Carrot.Amqp.Entities
         /// <remarks>
         /// HACK: converts major=8 and minor=0 into major=0 and minor=8. Please see the class comment.
         /// </remarks>
-        public static AmqpVersion Parse(Byte major, Byte minor)
+        public static AmqpVersion New(Byte major, Byte minor)
         {
             return new AmqpVersion(major == 8 && minor == 0 ? (Byte)0 : major,
                                    major == 8 && minor == 0 ? (Byte)8 : minor);
@@ -48,14 +48,14 @@ namespace Carrot.Amqp.Entities
             return $"{Major}.{Minor}";
         }
 
-        public static Boolean operator ==(AmqpVersion a, AmqpVersion b)
+        public static Boolean operator ==(AmqpVersion left, AmqpVersion right)
         {
-            return a.Equals(b);
+            return left.Equals(right);
         }
 
-        public static Boolean operator !=(AmqpVersion a, AmqpVersion b)
+        public static Boolean operator !=(AmqpVersion left, AmqpVersion right)
         {
-            return !(a == b);
+            return !(left == right);
         }
     }
 }

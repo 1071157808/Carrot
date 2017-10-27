@@ -21,7 +21,7 @@ namespace Carrot.Amqp
                                    buffer.ReadShort());
         }
 
-        public override Boolean Equals(object obj)
+        public override Boolean Equals(Object obj)
         {
             if (!(obj is FrameHeader))
                 return false;
@@ -35,7 +35,6 @@ namespace Carrot.Amqp
         public override Int32 GetHashCode()
         {
             var hashCode = -1225776683;
-            hashCode = hashCode * -1521134295 + base.GetHashCode();
             hashCode = hashCode * -1521134295 + Type.GetHashCode();
             hashCode = hashCode * -1521134295 + ChannelIndex.GetHashCode();
 
@@ -47,14 +46,14 @@ namespace Carrot.Amqp
             return $"{{\"frame_type\":\"{Type}\",\"channel_index\":{ChannelIndex}}}";
         }
 
-        public static Boolean operator ==(FrameHeader header1, FrameHeader header2)
+        public static Boolean operator ==(FrameHeader a, FrameHeader b)
         {
-            return header1.Equals(header2);
+            return a.Equals(b);
         }
 
-        public static Boolean operator !=(FrameHeader header1, FrameHeader header2)
+        public static Boolean operator !=(FrameHeader a, FrameHeader b)
         {
-            return !(header1 == header2);
+            return !(a == b);
         }
     }
 }

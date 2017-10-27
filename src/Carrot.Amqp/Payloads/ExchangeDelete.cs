@@ -31,8 +31,8 @@ namespace Carrot.Amqp.Payloads
             var name = ShortStringFieldValueCodec.Instance.Decode(buffer);
 
             var b = (Int32)buffer.ReadByte();
-            var ifUnused = (b & 1) == b;
-            var noWait = (b & 2) == b;
+            var ifUnused = (b & 1) == 1;
+            var noWait = (b & 2) == 2;
 
             return new ExchangeDelete(reserved1,
                                       name,

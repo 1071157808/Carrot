@@ -19,10 +19,15 @@ namespace Carrot.Amqp.Payloads
 
         internal static ConnectionStart Parse(IByteBuffer buffer)
         {
-            return new ConnectionStart(AmqpVersion.Parse(buffer.ReadByte(), buffer.ReadByte()),
-                                       TableFieldValueCodec.Instance.Decode(buffer),
-                                       Split(LongStringFieldValueCodec.Instance.Decode(buffer)),
-                                       Split(LongStringFieldValueCodec.Instance.Decode(buffer)));
+            var version = AmqpVersion.New(buffer.ReadByte(), buffer.ReadByte());
+            var properties = TableFieldValueCodec.Instance.Decode(buffer);
+            var mechanisms = Split(LongStringFieldValueCodec.Instance.Decode(buffer));
+            var locales = Split(LongStringFieldValueCodec.Instance.Decode(buffer));
+
+            return new ConnectionStart(version,
+                                       properties,
+                                       mechanisms,
+                                       locales);
         }
 
         internal ConnectionStart(AmqpVersion version,
@@ -52,7 +57,7 @@ namespace Carrot.Amqp.Payloads
             return String.Join(separator, source);
         }
 
-        private static String ToString(String[] source)
+        private static String ToString(IEnumerable<String> source)
         {
             return String.Join(",", source.Select(_ => $"\"{_}\""));
         }

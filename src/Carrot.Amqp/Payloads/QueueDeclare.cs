@@ -68,11 +68,11 @@ namespace Carrot.Amqp.Payloads
             var name = ShortStringFieldValueCodec.Instance.Decode(buffer);
 
             var b = (Int32)buffer.ReadByte();
-            var passive = (b & 1) == b;
-            var durable = (b & 2) == b;
-            var exclusive = (b & 4) == b;
-            var autoDelete = (b & 8) == b;
-            var noWait = (b & 16) == b;
+            var passive = (b & 1) == 1;
+            var durable = (b & 2) == 2;
+            var exclusive = (b & 4) == 4;
+            var autoDelete = (b & 8) == 8;
+            var noWait = (b & 16) == 16;
 
             var arguments = TableFieldValueCodec.Instance.Decode(buffer);
 

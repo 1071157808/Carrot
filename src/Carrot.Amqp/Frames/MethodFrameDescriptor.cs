@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carrot.Amqp.Decoding;
 using DotNetty.Buffers;
 
 namespace Carrot.Amqp.Frames
@@ -92,6 +93,12 @@ namespace Carrot.Amqp.Frames
         {
             ClassId = classId;
             MethodId = methodId;
+        }
+
+        internal void Write(IByteBuffer buffer)
+        {
+            Int16FieldValueCodec.Instance.Encode(ClassId, buffer);
+            Int16FieldValueCodec.Instance.Encode(MethodId, buffer);
         }
 
         public Boolean Equals(MethodFrameDescriptor other)
