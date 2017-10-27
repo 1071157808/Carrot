@@ -40,5 +40,7 @@ namespace Carrot.Amqp
         Task QueueDeleteAsync(String name,
                               Boolean ifUnused,
                               Boolean ifEmpty);
+
+        Task BasicQosAsync(Int16 prefetchCount, Boolean global);
     }
 }

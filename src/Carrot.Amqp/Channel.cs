@@ -208,5 +208,20 @@ namespace Carrot.Amqp
                         .LogError()
                         .Log(_ => $"RECEIVED: {_.ToString()}");
         }
+
+        public Task BasicQosAsync(Int16 prefetchCount, Boolean global)
+        {
+            var frame = new BasicQosFrame(channelIndex,
+                                          new BasicQos(0, // HACK: it seems RabbitMQ does not implement this: ({amqp_error,not_implemented,"prefetch_size!=0 (32768000)",'basic.qos'})
+                                                       prefetchCount,
+                                                       global));
+            return frame.SendAsync(channel)
+                        .LogError()
+                        .Log(_ => $"SENT: {_.ToString()}")
+                        .Then(_ => bag.For(BasicQosOk.StaticDescriptor)
+                                      .WaitForAsync<BasicQosOkFrame>(_.Header.ChannelIndex))
+                        .LogError()
+                        .Log(_ => $"RECEIVED: {_.ToString()}");
+        }
     }
 }

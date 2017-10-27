@@ -73,7 +73,12 @@ namespace Carrot.Amqp.Frames
                     { Payloads.QueueDelete.StaticDescriptor, (header, buffer) => new QueueDeleteFrame(header.ChannelIndex,
                                                                                                       Payloads.QueueDelete.Parse(buffer)) },
                     { Payloads.QueueDeleteOk.StaticDescriptor, (header, buffer) => new QueueDeleteOkFrame(header.ChannelIndex,
-                                                                                                          Payloads.QueueDeleteOk.Parse(buffer)) }
+                                                                                                          Payloads.QueueDeleteOk.Parse(buffer)) },
+                    // basic class
+                    { Payloads.BasicQos.StaticDescriptor, (header, buffer) => new BasicQosFrame(header.ChannelIndex,
+                                                                                                Payloads.BasicQos.Parse(buffer)) },
+                    { Payloads.BasicQosOk.StaticDescriptor, (header, buffer) => new BasicQosOkFrame(header.ChannelIndex,
+                                                                                                    Payloads.BasicQosOk.Parse(buffer)) }
                 };
 
         // TODO: be sure it won't be evaluated every time
